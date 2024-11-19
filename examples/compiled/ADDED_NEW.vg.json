@@ -1,0 +1,198 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Example of highlighting bars above a marker value",
+  "data": {
+    "values": [
+      {
+        "title": "1. Fraud Detection Rate (5% Threshold)",
+        "subtitle": "%",
+        "range": 10,
+        "measure": "Last Month",
+        "value": 3,
+        "marker": 5
+      },
+      {
+        "title": "1. Fraud Detection Rate (5% Threshold)",
+        "subtitle": "%",
+        "range": 10,
+        "measure": "This Month",
+        "value": 8,
+        "marker": 5
+      },
+      {
+        "title": "2. Cybersecurity Incident Rate (4/month Threshold)",
+        "subtitle": "incidents/month",
+        "range": 10,
+        "measure": "Last Month",
+        "value": 3,
+        "marker": 4
+      },
+      {
+        "title": "2. Cybersecurity Incident Rate (4/month Threshold)",
+        "subtitle": "incidents/month",
+        "range": 10,
+        "measure": "This Month",
+        "value": 6,
+        "marker": 4
+      },
+      {
+        "title": "3. Customer Satisfaction Score (>4.7 Target)",
+        "subtitle": "out of 5",
+        "range": 5,
+        "measure": "Last Month",
+        "value": 4.2,
+        "marker": 4.7
+      },
+      {
+        "title": "3. Customer Satisfaction Score (>4.7 Target)",
+        "subtitle": "out of 5",
+        "range": 5,
+        "measure": "This Month",
+        "value": 3.8,
+        "marker": 4.7
+      },
+      {
+        "title": "4. Credit Risk Exposure ($80Million Threshold)",
+        "subtitle": "Amount",
+        "range": 100,
+        "measure": "Last Month",
+        "value": 45,
+        "marker": 80
+      },
+      {
+        "title": "4. Credit Risk Exposure ($80Million Threshold)",
+        "subtitle": "Amount",
+        "range": 100,
+        "measure": "This Month",
+        "value": 6,
+        "marker": 80
+      }
+    ]
+  },
+  "facet": {
+    "row": {
+      "field": "title",
+      "type": "ordinal",
+      "header": {
+        "labelAngle": 0,
+        "title": "",
+        "labelAlign": "left",
+        "labelPadding": 10
+      }
+    },
+    "column": {
+      "field": "measure",
+      "type": "ordinal",
+      "header": {
+        "labelAngle": 0,
+        "title": ""
+      }
+    }
+  },
+  "spacing": 10,
+  "spec": {
+    "width": 300,
+    "height": 30,
+    "transform": [
+      {
+        "calculate": "datum.value > datum.marker ? datum.value : null",
+        "as": "exceeded_value"
+      }
+    ],
+    "layer": [
+      {
+        "mark": {
+          "type": "bar",
+          "color": "#0049761a"
+        },
+        "encoding": {
+          "x": {
+            "field": "range",
+            "type": "quantitative",
+            "scale": {
+              "nice": false
+            },
+            "title": null
+          }
+        }
+      },
+      {
+        "mark": {
+          "type": "bar",
+          "color": "#00497666",
+          "size": 12
+        },
+        "encoding": {
+          "x": {
+            "field": "value",
+            "type": "quantitative"
+          }
+        }
+      },
+      {
+        "mark": {
+          "type": "bar",
+          "color": "#e4575588",
+          "size": 10
+        },
+        "transform": [
+          {
+            "filter": "datum.exceeded_value != null"
+          }
+        ],
+        "encoding": {
+          "x": {
+            "field": "exceeded_value",
+            "type": "quantitative"
+          }
+        }
+      },
+      {
+        "mark": {
+          "type": "tick",
+          "color": "darkred",
+          "thickness": 5
+        },
+        "encoding": {
+          "x": {
+            "field": "marker",
+            "type": "quantitative"
+          }
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "right",
+          "baseline": "middle",
+          "dx": 5,
+          "dy": -10,
+          "fontSize": 13
+        },
+        "encoding": {
+          "x": {
+            "field": "range",
+            "type": "quantitative"
+          },
+          "text": {
+            "field": "subtitle",
+            "type": "nominal"
+          }
+        }
+      }
+    ]
+  },
+  "resolve": {
+    "scale": {
+      "x": "independent"
+    }
+  },
+  "config": {
+    "tick": {
+      "thickness": 2
+    },
+    "scale": {
+      "barBandPaddingInner": 0
+    }
+  }
+}
